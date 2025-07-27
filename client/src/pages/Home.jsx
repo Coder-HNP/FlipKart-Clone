@@ -22,12 +22,12 @@ export default function Home() {
       },
       body: JSON.stringify({ productId: id })
     });
-    alert('Product added to cart!');
+    alert('Product added!');
   };
 
   return (
     <div className="container">
-      <h2>Products</h2>
+      <h2>All Products</h2>
       <div className="product-grid">
         {products.map(p => (
           <div key={p._id} className="product-card">

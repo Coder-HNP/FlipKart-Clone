@@ -24,7 +24,7 @@ export default function Cart() {
 
   return (
     <div className="container">
-      <h2>Your Cart</h2>
+      <h2>🛒 Your Cart</h2>
       {items.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
@@ -38,7 +38,9 @@ export default function Cart() {
               <button onClick={() => removeItem(item.product._id)}>Remove</button>
             </div>
           ))}
-          <p><strong>Total: ₹{items.reduce((t, i) => t + i.product.price * i.quantity, 0)}</strong></p>
+          <p className="total-price">
+            Total: ₹{items.reduce((t, i) => t + i.product.price * i.quantity, 0)}
+          </p>
         </>
       )}
     </div>

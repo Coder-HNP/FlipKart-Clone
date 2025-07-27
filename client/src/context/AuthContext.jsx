@@ -1,4 +1,3 @@
-// client/src/context/AuthContext.jsx
 import { createContext, useState, useContext } from 'react';
 
 const AuthContext = createContext();
@@ -6,9 +5,9 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
-  const login = (token) => {
-    localStorage.setItem('token', token);
-    setToken(token);
+  const login = (newToken) => {
+    localStorage.setItem('token', newToken);
+    setToken(newToken);
   };
 
   const logout = () => {

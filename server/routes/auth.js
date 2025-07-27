@@ -1,27 +1,34 @@
-// server/routes/auth.js
 const express = require('express');
-const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+
 const router = express.Router();
 
-// Signup
-router.post('/signup', async (req, res) => {
-  const { name, email, password } = req.body;
-  const hash = await bcrypt.hash(password, 10);
-  const user = new User({ name, email, password: hash });
-  await user.save();
-  res.send('User registered');
-});
-
-// Login
+// POST /api/auth/login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(400).send('Invalid credentials');
+
+  // Validate input
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password required" });
   }
-  const token = jwt.sign({ userId: user._id }, 'secret');
+
+  // Check if user exists
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  // Compare passwords
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  // Create JWT
+  const token = jwt.sign({ userId: user._id }, "secretkey", { expiresIn: "1h" });
+
   res.json({ token });
 });
 
